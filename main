@@ -1,0 +1,29 @@
+VideoCapture capture = new VideoCapture(0);
+		Mat webcam_image = new Mat();
+    Mat resim;
+    Mat hierarchy;
+    
+    if(capture.isOpened())
+		{
+			while(true)
+			{
+        capture.read(webcam_image);
+        Imgproc.cvtColor(webcam_image, webcam_image, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.Canny(kareresim, kareresim, 20.0, 150.0,3,true);
+        
+        //Contour Bulma
+				List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+				Imgproc.findContours(kareresim, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+			
+				//En büyük alana sahip contour 
+				int largest_area=0;
+				for(int i=0; i<contours.size(); i++)
+				{
+					temp = Imgproc.contourArea(contours.get(i));
+					if(temp>largest_area)
+					largest_area=i;	
+				}
+        
+        Imgproc.drawContours(webcam_image, contours, largest_area,  new Scalar(10, 0, 0),3);
+      }
+    }  
